@@ -239,10 +239,14 @@ setAlphabet a' b' w = w { _text = f `T.map` t }
 concatWords :: DyckWord -> DyckWord -> DyckWord
 concatWords a b = fromText' (juxtapose a b)
 
+-- | The Dyck language forms a semigroup under 'concatWords'.
+instance Semigroup DyckWord where
+  (<>) = concatWords
+
 -- | The Dyck language forms a monoid under 'concatWords', with the 'empty'
 --   word as identity.
 instance Monoid DyckWord where
-  mappend = concatWords
+  mappend = (<>)
   mempty = empty
 
 -- | Return the /absolute/ rank of a Dyck word. That is, its position in the 
